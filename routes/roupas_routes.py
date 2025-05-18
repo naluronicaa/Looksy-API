@@ -1,33 +1,43 @@
 from flask import Blueprint, request, jsonify
-from db.database import get_db
+from utils.helper import verificar_token
+from models.roupa_model import (
+    listar_roupas_usuario,
+    listar_roupas_recentes,
+    cadastrar_roupa,
+    deletar_roupa
+)
 
 roupas_bp = Blueprint('roupas', __name__, url_prefix='/api/roupas')
 
 @roupas_bp.route('/', methods=['GET'])
-def listar_roupas():
-    db = get_db()
-    roupas = db.execute('SELECT * FROM roupas').fetchall()
-    return jsonify([dict(r) for r in roupas])
+@verificar_token
+def get_roupas():
+    usuario_id = request.usuario_id
+    roupas = listar_roupas_usuario(usuario_id)
+    return jsonify(roupas)
+
+@roupas_bp.route('/recentes', methods=['GET'])
+@verificar_token
+def get_roupas_recentes():
+    usuario_id = request.usuario_id
+    roupas = listar_roupas_recentes(usuario_id)
+    return jsonify(roupas)
 
 @roupas_bp.route('/', methods=['POST'])
-def cadastrar_roupa():
+@verificar_token
+def post_roupa():
+    usuario_id = request.usuario_id
     data = request.json
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute('''
-        INSERT INTO roupas (usuario_id, foto_uri, categoria, subtipo, descricao)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (
-        data.get('usuario_id'),
-        data.get('foto_uri'),
-        data.get('categoria'),
-        data.get('subtipo'),
-        data.get('descricao')
-    ))
-    roupa_id = cursor.lastrowid
-
-    for uso in data.get('usos', []):
-        cursor.execute('INSERT INTO usos_roupa (roupa_id, uso) VALUES (?, ?)', (roupa_id, uso))
-
-    db.commit()
+    roupa_id = cadastrar_roupa(usuario_id, data)
     return jsonify({'message': 'Roupa cadastrada!', 'id': roupa_id})
+
+@roupas_bp.route('/<int:roupa_id>', methods=['DELETE'])
+@verificar_token
+def delete_roupa(roupa_id):
+    usuario_id = request.usuario_id
+    sucesso = deletar_roupa(usuario_id, roupa_id)
+
+    if not sucesso:
+        return jsonify({'message': 'Roupa não encontrada ou não pertence ao usuário'}), 404
+
+    return jsonify({'message': 'Roupa deletada com sucesso!'})
