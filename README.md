@@ -58,10 +58,12 @@ Exemplo:
 
 <pre>
   # config.py 
-  SECRET_KEY = 'sua_chave_secreta_aqui' #[Gerador de Token](https://jwtsecret.com/generate)
+  SECRET_KEY = 'sua_chave_secreta_aqui'
   DATABASE = 'database.db
 </pre>
 
+Para o secret_key:
+[Gerador de JwtSecret](https://jwtsecret.com/generate)
 ---
 
 ### 🧱 Geração do banco de dados
