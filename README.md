@@ -56,11 +56,7 @@ Authorization: Bearer SEU_TOKEN_AQUI
 Todas as configurações estão centralizadas no arquivo `config.py`.  
 Exemplo:
 
-```python
-# config.py
-
-SECRET_KEY = 'sua_chave_secreta_aqui'
-DATABASE = 'database.db'
+<pre> ```python # config.py SECRET_KEY = 'sua_chave_secreta_aqui' DATABASE = 'database.db' ``` </pre>
 
 ---
 
