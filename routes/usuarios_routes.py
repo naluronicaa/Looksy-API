@@ -8,6 +8,7 @@ from models.usuario_model import (
 )
 
 from utils.helper import gerar_token
+from utils.helper import verificar_token
 
 usuarios_bp = Blueprint('usuarios', __name__, url_prefix='/api/usuarios')
 
@@ -33,6 +34,7 @@ def criar():
 
 # Atualizar nome e/ou email
 @usuarios_bp.route('/<int:usuario_id>', methods=['PUT'])
+@verificar_token
 def atualizar_dados(usuario_id):
     data = request.json
     sucesso = atualizar_usuario(usuario_id, data.get('nome'), data.get('email'))
@@ -44,6 +46,7 @@ def atualizar_dados(usuario_id):
 
 # Trocar senha (recebe antiga e nova)
 @usuarios_bp.route('/<int:usuario_id>/senha', methods=['PUT'])
+@verificar_token
 def trocar_senha(usuario_id):
     data = request.json
     senha_antiga = data.get('senha_antiga')
@@ -59,6 +62,26 @@ def trocar_senha(usuario_id):
 
 # Deletar usuário
 @usuarios_bp.route('/<int:usuario_id>', methods=['DELETE'])
+@verificar_token
 def deletar(usuario_id):
     deletar_usuario(usuario_id)
     return jsonify({'message': 'Usuário deletado com sucesso!'})
+
+# Obter dados do usuário pelo e-mail (somente se for o e-mail do próprio token)
+@usuarios_bp.route('/email/<string:email>', methods=['GET'])
+@verificar_token
+def buscar_usuario_por_email(email):
+    usuario = obter_usuario_por_email(email)
+
+    if not usuario:
+        return jsonify({'message': 'Usuário não encontrado'}), 404
+
+    # impede que outra pessoa consulte um email que não é o dela
+    if usuario['id'] != request.usuario_id:
+        return jsonify({'message': 'Acesso negado'}), 403
+
+    return jsonify({
+        'id': usuario['id'],
+        'nome': usuario['nome'],
+        'email': usuario['email']
+    })
