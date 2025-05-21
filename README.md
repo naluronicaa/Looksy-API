@@ -56,7 +56,11 @@ Authorization: Bearer SEU_TOKEN_AQUI
 Todas as configurações estão centralizadas no arquivo `config.py`.  
 Exemplo:
 
-<pre> ```python # config.py SECRET_KEY = 'sua_chave_secreta_aqui' DATABASE = 'database.db' ``` </pre>
+<pre>
+  # config.py 
+  SECRET_KEY = 'sua_chave_secreta_aqui' #[Gerador de Token](https://jwtsecret.com/generate)
+  DATABASE = 'database.db
+</pre>
 
 ---
 
