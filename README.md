@@ -64,6 +64,7 @@ Exemplo:
 
 Para o secret_key:
 [Gerador de JwtSecret](https://jwtsecret.com/generate)
+
 ---
 
 ### 🧱 Geração do banco de dados
