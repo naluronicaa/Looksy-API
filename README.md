@@ -82,7 +82,7 @@ Basta rodar o notebook antes de iniciar o servidor.
 
 ---
 
-### 🧪 Testes com Postman ou Insomnia
+### 🧪 Testes com Postman, Insomnia ou ThunderClient
 Inclua o token JWT no header:
 
 makefile
