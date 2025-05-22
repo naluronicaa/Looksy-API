@@ -56,11 +56,14 @@ Authorization: Bearer SEU_TOKEN_AQUI
 Todas as configurações estão centralizadas no arquivo `config.py`.  
 Exemplo:
 
-```python
-# config.py
+<pre>
+  # config.py 
+  SECRET_KEY = 'sua_chave_secreta_aqui'
+  DATABASE = 'database.db
+</pre>
 
-SECRET_KEY = 'sua_chave_secreta_aqui'
-DATABASE = 'database.db'
+Para o secret_key:
+[Gerador de JwtSecret](https://jwtsecret.com/generate)
 
 ---
 
@@ -79,7 +82,7 @@ Basta rodar o notebook antes de iniciar o servidor.
 
 ---
 
-### 🧪 Testes com Postman ou Insomnia
+### 🧪 Testes com Postman, Insomnia ou ThunderClient
 Inclua o token JWT no header:
 
 makefile
