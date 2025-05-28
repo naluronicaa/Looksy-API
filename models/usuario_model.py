@@ -49,5 +49,23 @@ def atualizar_senha(usuario_id, senha_antiga, nova_senha):
 
 def deletar_usuario(usuario_id):
     db = get_db()
+    
+    # Deleta os usos de roupas do usuário
+    roupa_ids = db.execute('SELECT id FROM roupas WHERE usuario_id = ?', (usuario_id,)).fetchall()
+    for r in roupa_ids:
+        db.execute('DELETE FROM usos_roupa WHERE roupa_id = ?', (r['id'],))
+
+    # Deleta roupas
+    db.execute('DELETE FROM roupas WHERE usuario_id = ?', (usuario_id,))
+    
+    # Deleta looks
+    db.execute('DELETE FROM looks WHERE usuario_id = ?', (usuario_id,))
+    
+    # Deleta questionário
+    db.execute('DELETE FROM questionario WHERE usuario_id = ?', (usuario_id,))
+    
+    # Por fim, deleta o usuário
     db.execute('DELETE FROM usuarios WHERE id = ?', (usuario_id,))
+    
     db.commit()
+
