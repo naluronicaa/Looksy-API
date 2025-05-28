@@ -76,6 +76,8 @@ Tabela de roupas
 
 Tabela de usos das roupas
 
+Tabela de Looks
+
 Tabela de respostas do questionário
 
 Basta rodar o notebook antes de iniciar o servidor.
@@ -85,7 +87,4 @@ Basta rodar o notebook antes de iniciar o servidor.
 ### 🧪 Testes com Postman, Insomnia ou ThunderClient
 Inclua o token JWT no header:
 
-makefile
-Copiar
-Editar
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
