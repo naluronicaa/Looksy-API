@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from models.usuario_model import (
+    atualizar_imagem_usuario,
     criar_usuario,
     atualizar_usuario,
     atualizar_senha,
@@ -83,5 +84,21 @@ def buscar_usuario_por_email(email):
     return jsonify({
         'id': usuario['id'],
         'nome': usuario['nome'],
-        'email': usuario['email']
+        'email': usuario['email'],
+        'idade': usuario['idade'],
+        'imagem_url': usuario['imagem_url'],
     })
+
+@usuarios_bp.route('/<int:usuario_id>/imagem', methods=['PUT'])
+@verificar_token
+def atualizar_imagem(usuario_id):
+    data = request.get_json()
+
+    if not data or 'imagem_url' not in data:
+        return jsonify({'error': 'Campo "imagem_url" é obrigatório.'}), 400
+
+    sucesso = atualizar_imagem_usuario(usuario_id, data['imagem_url'])
+    if sucesso:
+        return jsonify({'message': 'Imagem atualizada com sucesso.'})
+    else:
+        return jsonify({'error': 'Erro ao atualizar imagem.'}), 500

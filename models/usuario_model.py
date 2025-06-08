@@ -69,3 +69,8 @@ def deletar_usuario(usuario_id):
     
     db.commit()
 
+def atualizar_imagem_usuario(usuario_id, imagem_url):
+    db = get_db()
+    db.execute('UPDATE usuarios SET imagem_url = ? WHERE id = ?', (imagem_url, usuario_id))
+    db.commit()
+    return True
